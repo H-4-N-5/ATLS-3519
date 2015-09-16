@@ -1,17 +1,12 @@
-#!/usr/bin/env python
+from twython import Twython, TwythonError
 
-from twython import Twython
+# Requires Authentication as of Twitter API v1.1
+twitter = Twython('ffTvOIZqqWn9japC6mJ8n02Mc', 'L9lYgDMUfXi2Ev6iVSmukGOJlkdMobOR0UToFNDKlai81RnE5W', '499163854-N4BesXw2V5wFwH2vnTChqwtSmdRP2MY9JqXXXhUB', 'oNNox40GznN1hMY1TDGJLTojUObY9B30993uAogUFWd6c')
+try:
+    search_results = twitter.search(q='Global Warming', count=50)
+except TwythonError as e:
+    print e
 
-APP_KEY = 'ffTvOIZqqWn9japC6mJ8n02Mc'
-APP_SECRET = 'L9lYgDMUfXi2Ev6iVSmukGOJlkdMobOR0UToFNDKlai81RnE5W'
-
-OAUTH_TOKEN = '499163854-N4BesXw2V5wFwH2vnTChqwtSmdRP2MY9JqXXXhUB'
-OAUTH_TOKEN_SECRET = 'oNNox40GznN1hMY1TDGJLTojUObY9B30993uAogUFWd6c'
-
-
-twitter = Twython(APP_KEY, APP_SECRET,
-                  OAUTH_TOKEN, OAUTH_TOKEN_SECRET)
-
-
-
-twitter.search(q='twitter', result_type='popular')
+for tweet in search_results['statuses']:
+    print 'Tweet from @%s Date: %s' % (tweet['user']['screen_name'].encode('utf-8'), tweet['created_at'])
+    print tweet['text'].encode('utf-8'), '\n'
